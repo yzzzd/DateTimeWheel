@@ -2,6 +2,7 @@ package com.nuryazid.wheelpicker.ui;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Space;
 
 import com.nuryazid.wheelpicker.R;
 import com.nuryazid.wheelpicker.util.OnWheelChangeListener;
@@ -25,6 +26,8 @@ public class DatePicker {
     private WheelPicker monthWheel;
     private WheelPicker yearWheel;
 
+    private Space spaceDate;
+
     private int datePos = 0;
     private int monthPos = 0;
     private int yearPos = 0;
@@ -39,6 +42,8 @@ public class DatePicker {
 
     private Calendar maxDay = null;
     private Calendar minDay = null;
+
+    private Boolean hideDate = false;
 
     public DatePicker(Context context) {
 
@@ -55,11 +60,20 @@ public class DatePicker {
                             dialog.dismiss();
                         } else if (i == R.id.btnSave) {
                             dialog.dismiss();
-                            String strDateLocal = yearList.get(yearWheel.getCurrentItemPosition())
-                                    + "-"
-                                    + format2LenStr(month(monthList.get(monthWheel.getCurrentItemPosition())))
-                                    + "-"
-                                    + format2LenStr(Integer.parseInt(dateList.get(dateWheel.getCurrentItemPosition())));
+
+                            String strDateLocal = "";
+
+                            if (hideDate){
+                                strDateLocal = yearList.get(yearWheel.getCurrentItemPosition())
+                                        + "-"
+                                        + format2LenStr(month(monthList.get(monthWheel.getCurrentItemPosition())));
+                            } else {
+                                strDateLocal = yearList.get(yearWheel.getCurrentItemPosition())
+                                        + "-"
+                                        + format2LenStr(month(monthList.get(monthWheel.getCurrentItemPosition())))
+                                        + "-"
+                                        + format2LenStr(Integer.parseInt(dateList.get(dateWheel.getCurrentItemPosition())));
+                            }
 
                             if (pickerListener != null) {
                                 pickerListener.dataSet(strDateLocal);
@@ -74,6 +88,8 @@ public class DatePicker {
         yearWheel = view.findViewById(R.id.yearWheel);
         monthWheel = view.findViewById(R.id.monthWheel);
         dateWheel = view.findViewById(R.id.dateWheel);
+
+        spaceDate = view.findViewById(R.id.spaceDate);
 
         yearWheel.setData(yearList);
         monthWheel.setData(monthList);
@@ -119,6 +135,13 @@ public class DatePicker {
             }
         });
 
+    }
+
+    public DatePicker hideDate(){
+        hideDate = true;
+        dateWheel.setVisibility(View.GONE);
+        spaceDate.setVisibility(View.GONE);
+        return this;
     }
 
     private void invalidateTotalDate(int year, int month) {

@@ -57,6 +57,7 @@
             app:wheel_selected_item_text_color="#000000" />
 
         <android.support.v4.widget.Space
+            android:id="@+id/spaceDate"
             android:layout_width="8dp"
             android:layout_height="match_parent" />
 
